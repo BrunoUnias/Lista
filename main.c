@@ -2,56 +2,59 @@
 #include <stdlib.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
-typedef struct node{
+typedef struct ListaE{
 	int numero;
-	struct node *prox;
+	struct Lista *prox;
 	
-}No;
+}node;
 
-No *cria_lista(){
-	No *novo,*aux;
-	novo = (No*) malloc(sizeof(No));
+node *criar(){
+	node *novo,*aux;
+	novo = (node *)malloc(sizeof(node));
 	if(novo == NULL) exit(0);
 	
-	novo->prox == NULL;
+	novo->prox = NULL;
 	aux = novo;
 	
-	return(aux);
+	return aux;
 }
 
-No * inserirNoInicio(No * raiz, int numero){
-    No * novo, *aux;
-    aux = raiz;
-    novo = (No *) malloc(sizeof(No));
-    if(novo == NULL) exit(0);     
-    novo->numero = numero;
-    novo->prox = aux->prox;
-    aux->prox = novo;
-    return(aux);
+node *insereNoInicio(node *raiz,int numero){
+	node *novo,*aux;
+	aux = raiz;
+	novo = (node *)malloc(sizeof(node));
+	if(novo == NULL) exit(0);
+	novo->numero = numero;
+	novo->prox = aux->prox;
+	aux->prox = novo;
+	
+	return aux;
+	
 }
 
-void inserirNoFim(No **raiz, int numero){
-    No *novo;
-    novo = (No *) malloc(sizeof(No));
-    if(novo == NULL) exit(0);
-    novo->numero = numero;
-    novo->prox = NULL;
-    
-    if(*raiz == NULL){
-        *raiz = novo;
-    }else{
-        No *aux;
-        aux = *raiz;
-        while(aux->prox != NULL){
-            aux = aux->prox;
-        }
-        aux->prox = novo;
-        *raiz = aux;
-    }
+void insereNoFim(node *raiz,int numero){
+	node *novo;
+	novo = (node *)malloc(sizeof(node));
+	if(novo == NULL) exit(0);
+	novo->numero = numero;
+	novo->prox = NULL;
+	if(raiz == NULL){
+		raiz = novo;
+		
+	}else{
+		node *aux = raiz;
+		while(aux->prox == NULL){
+			aux = aux->prox;
+			
+		}
+		aux = aux->prox;
+		raiz = aux;
+		
+	}
 }
 
-void removerNoInicio(No *raiz){
-    No *aux;
+void removerNoInicio(node *raiz){
+    node *aux;
     if(raiz == NULL)
         printf("\nA lista ja esta vazia");
     else{
@@ -61,12 +64,12 @@ void removerNoInicio(No *raiz){
     }
 }
 
-void removerNoFim(struct No **raiz){
-    if(*raiz == NULL)
+void removerNoFim(node *raiz){
+    if(raiz == NULL)
         printf("\nA lista ja esta vazia");
     else{
-        No *auxFrente, *auxTras=NULL;
-        auxFrente = *raiz;
+        node *auxFrente, *auxTras=NULL;
+        auxFrente = raiz;
         while(auxFrente->prox != NULL){
             auxTras = auxFrente;
             auxFrente = auxFrente->prox;
@@ -79,16 +82,41 @@ void removerNoFim(struct No **raiz){
     }
 }
 
-int main(int argc, char *argv[]) {
-	No *raiz;
+void imprime(node *ler){
+	node *p;
+	if(p == NULL) printf("lista vazia");
+	for(p = ler->prox;p != NULL;p = p->prox){
+		printf("%d\n", p->numero);
+	}
 	
-	raiz = cria_lista();
-	return 0;
 }
 
-int opt(No *raiz,int numero){
-	No *p;
-	switch(numero){
-		
-	}	
+int main(int argc, char *argv[]) {
+	int x,k,i;
+	node *p_l = criar();
+	
+	for(i = 0; i<=10;i++){
+		system("cls");
+		printf("1-inseriNoInicio\n2-imprime\n3-inseriNoFim\n4-removerNoInicio\n5-removerNoFim.");
+		printf("\nO que deseja fazer:");
+		scanf("%d",&x);
+		switch(x){
+			case 1:
+				printf("insera o valor:");
+				scanf("%d",&k);
+				insereNoInicio(p_l,k);
+				break;
+			case 2:
+				imprime(p_l);
+				break;
+			case 3:
+				printf("insera o valor:");
+				scanf("%d",&k);
+				insereNoFim(p_l,k);
+				break;
+		}
+	
+	}
+	
+	return 0;
 }
