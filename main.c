@@ -1,121 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define TAMANHO 100
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
-typedef struct ListaE{
-	int numero;
-	struct Lista *prox;
+typedef struct queue{
+	int itens[TAMANHO];
+	int front,rear;
 	
-}node;
+}queue;
 
-node *criar(){
-	node *novo,*aux;
-	novo = (node *)malloc(sizeof(node));
-	if(novo == NULL) exit(0);
-	
-	novo->prox = NULL;
-	aux = novo;
-	
-	return aux;
-}
-
-node *insereNoInicio(node *raiz,int numero){
-	node *novo,*aux;
-	aux = raiz;
-	novo = (node *)malloc(sizeof(node));
-	if(novo == NULL) exit(0);
-	novo->numero = numero;
-	novo->prox = aux->prox;
-	aux->prox = novo;
-	
-	return aux;
-	
-}
-
-void insereNoFim(node *raiz,int numero){
-	node *novo;
-	novo = (node *)malloc(sizeof(node));
-	if(novo == NULL) exit(0);
-	novo->numero = numero;
-	novo->prox = NULL;
-	if(raiz == NULL){
-		raiz = novo;
-		
-	}else{
-		node *aux = raiz;
-		while(aux->prox == NULL){
-			aux = aux->prox;
-			
-		}
-		aux = aux->prox;
-		raiz = aux;
+int vazia(queue *pq){
+	printf(1);
+	if(pq->front == pq->rear){
+		printf("Fila vazia");
+		return 1;
 		
 	}
+	return 0;
+	
 }
 
-void removerNoInicio(node *raiz){
-    node *aux;
-    if(raiz == NULL)
-        printf("\nA lista ja esta vazia");
-    else{
-        aux = raiz->prox;
-        raiz->prox = aux->prox;
-        free(aux);
-    }
-}
-
-void removerNoFim(node *raiz){
-    if(raiz == NULL)
-        printf("\nA lista ja esta vazia");
-    else{
-        node *auxFrente, *auxTras=NULL;
-        auxFrente = raiz;
-        while(auxFrente->prox != NULL){
-            auxTras = auxFrente;
-            auxFrente = auxFrente->prox;
-        }
-
-        if(auxTras != NULL)
-            auxTras->prox = NULL;
-
-        free(auxFrente);
-    }
-}
-
-void imprime(node *ler){
-	node *p;
-	if(p == NULL) printf("lista vazia");
-	for(p = ler->prox;p != NULL;p = p->prox){
-		printf("%d\n", p->numero);
+int insere(queue *pq,int x){
+	if(pq->rear + 1 >= TAMANHO){
+		printf("Estouro na capacidade da fila");
+		
 	}
+	else{
+		pq->itens[pq->rear++] = x;
+		
+	}
+	return 0;
 	
 }
 
-int main(int argc, char *argv[]) {
-	int x,k,i;
-	node *p_l = criar();
+int fila_remove(queue *pq){
+	int v;
+	if(vazia(pq)){
+		vazia(pq);
+		
+	}
+	v = pq->itens[pq->front];
+	pq->front = pq->rear;
+	return v;
 	
-	for(i = 0; i<=10;i++){
+}
+
+int size(queue *pq){
+	return pq->front - pq->rear + 1;
+	
+}
+
+int front(queue *pq){
+	return pq->front;
+	
+}
+
+
+int main() {
+	int opcao,i,x;
+	queue *pq;
+	for(i = 0; i<= 10;i++){
+			printf("1-vazia\n2-insere\n3-remove\n4-size\n5-front");
+		scanf("%d",&opcao);
 		system("cls");
-		printf("1-inseriNoInicio\n2-imprime\n3-inseriNoFim\n4-removerNoInicio\n5-removerNoFim.");
-		printf("\nO que deseja fazer:");
-		scanf("%d",&x);
-		switch(x){
+		switch(opcao){
 			case 1:
-				printf("insera o valor:");
-				scanf("%d",&k);
-				insereNoInicio(p_l,k);
+				vazia(pq);
 				break;
 			case 2:
-				imprime(p_l);
-				break;
-			case 3:
-				printf("insera o valor:");
-				scanf("%d",&k);
-				insereNoFim(p_l,k);
+				insere(pq,x);
 				break;
 		}
-	
 	}
 	
 	return 0;
